@@ -1,9 +1,7 @@
 <template>
-  <v-main>
-    <router-view />
-  </v-main>
+  <Auth />
 </template>
 
 <script lang="ts" setup>
-  //
+import Auth from "@/components/Auth.vue";
 </script>

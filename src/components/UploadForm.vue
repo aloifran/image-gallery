@@ -36,7 +36,7 @@
             :rules="formRules"
             @change="handleFile"
           />
-          <v-btn type="submit" class="text-black" :loading="loading">
+          <v-btn type="submit" color="primary" :loading="loading">
             Upload
           </v-btn>
         </v-form>
