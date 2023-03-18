@@ -54,7 +54,7 @@ const getImagesBatch = async () => {
   let lastImgId = images.length === 0 ? 0 : sortedImages[0].id;
 
   if (lastImgId === 0) {
-    // firstImagesBatch
+    // firstImageBatch
     let { data, error: selectError } = await supabase
       .from("images")
       .select()
@@ -68,7 +68,7 @@ const getImagesBatch = async () => {
 
     images.length > 11 ? (loadMore.value = true) : (loadMore.value = false);
   } else {
-    // nextImagesBatch
+    // nextImageBatch
     let { data, error: selectError } = await supabase
       .from("images")
       .select()
@@ -90,6 +90,7 @@ const getImagesBatch = async () => {
 };
 
 const refreshGallery = () => {
+  showModal.value = false;
   store.images = [];
   getImagesBatch();
 };

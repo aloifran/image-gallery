@@ -51,9 +51,9 @@ import { supabase } from "../lib/supabase";
 import { useAppStore } from "@/store/app";
 import { Image } from "../lib/database.types";
 
-const store = useAppStore();
 const props = defineProps<{ modelValue: boolean }>();
-
+const store = useAppStore();
+const { id } = store.user!;
 const form = ref();
 const file = ref();
 const title = ref("");
@@ -73,7 +73,7 @@ const uploadImage = async () => {
   // upload to storage
   loading.value = true;
   const fileExt = file.value.name.split(".").pop();
-  const filePath = `gallery/${Math.random()}.${fileExt}`;
+  const filePath = `${id}/${Math.random()}.${fileExt}`;
   let fileUrl;
 
   let { error: uploadError } = await supabase.storage
@@ -90,13 +90,15 @@ const uploadImage = async () => {
     title: title.value,
     description: description.value,
     url: fileUrl,
+    user_id: id,
   });
   if (insertError) {
     throw insertError;
   }
+  addImage(fileUrl);
   loading.value = false;
   form.value.reset();
-  addImage(fileUrl);
+  store.showDialogForm = !store.showDialogForm;
 };
 
 const addImage = async (fileUrl: string) => {
