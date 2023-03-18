@@ -8,6 +8,9 @@
         @click="store.showDialogForm = !store.showDialogForm"
         >Add an image</v-btn
       >
+      <v-btn variant="outlined" class="my-10 mx-5" @click="signOut"
+        >Sign out</v-btn
+      >
     </v-app-bar>
     <v-main>
       <router-view />
@@ -18,6 +21,16 @@
 
 <script setup lang="ts">
 import { useAppStore } from "@/store/app";
+import { supabase } from "@/lib/supabase";
 
 const store = useAppStore();
+
+async function signOut() {
+  try {
+    let { error } = await supabase.auth.signOut();
+    if (error) throw error;
+  } catch (error) {
+    console.log(error);
+  }
+}
 </script>
