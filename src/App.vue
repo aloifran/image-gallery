@@ -9,6 +9,7 @@ import DefaultLayout from "@/layouts/Default.vue";
 
 const route = useRoute();
 
+// handle layouts
 const layout = computed(() => {
   return route.meta.layout || DefaultLayout;
 });
