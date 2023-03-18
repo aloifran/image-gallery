@@ -44,32 +44,36 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { supabase } from "../lib/supabase";
-import { useAppStore } from "@/store/app";
+import { useRouter } from "vue-router";
 
-const store = useAppStore();
+const router = useRouter();
 const loading = ref(false);
 const showSignUp = ref(false);
 const email = ref("");
 const password = ref("");
 
 const signUp = async () => {
-  let { data, error } = await supabase.auth.signUp({
+  let { error } = await supabase.auth.signUp({
     email: email.value,
     password: password.value,
   });
+  if (error) throw error;
+  router.push("/");
 };
 
 const signInCredentials = async () => {
-  let { data, error } = await supabase.auth.signInWithPassword({
+  let { error } = await supabase.auth.signInWithPassword({
     email: email.value,
     password: password.value,
   });
+  if (error) throw error;
+  router.push("/");
 };
 
 const signInProvider = async () => {
   try {
     loading.value = true;
-    const { data, error } = await supabase.auth.signInWithOAuth({
+    const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
     });
   } catch (error) {

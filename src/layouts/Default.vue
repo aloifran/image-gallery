@@ -22,15 +22,14 @@
 <script setup lang="ts">
 import { useAppStore } from "@/store/app";
 import { supabase } from "@/lib/supabase";
+import { useRouter } from "vue-router";
 
+const router = useRouter();
 const store = useAppStore();
 
 async function signOut() {
-  try {
-    let { error } = await supabase.auth.signOut();
-    if (error) throw error;
-  } catch (error) {
-    console.log(error);
-  }
+  let { error } = await supabase.auth.signOut();
+  if (error) throw error;
+  router.push("/sign-in");
 }
 </script>
