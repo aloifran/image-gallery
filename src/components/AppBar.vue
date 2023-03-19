@@ -24,6 +24,6 @@ const store = useAppStore();
 async function signOut() {
   let { error } = await supabase.auth.signOut();
   if (error) throw error;
-  router.push("/sign-in");
+  router.push("sign-in");
 }
 </script>

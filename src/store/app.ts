@@ -8,6 +8,7 @@ export const useAppStore = defineStore("app", {
     images: new Array<Image>(),
     user: null as User | null,
   }),
+
   actions: {
     setUser(user: User) {
       this.user = user;
@@ -19,6 +20,7 @@ export const useAppStore = defineStore("app", {
       this.images.unshift(image);
     },
   },
+
   getters: {
     // !! transforms result into boolean
     isLoggedIn: (state) => !!state.user,
