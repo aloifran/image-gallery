@@ -1,6 +1,9 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { useAppStore } from "@/store/app";
-import AuthLayout from "@/layouts/Auth.vue";
+
+// Layouts
+import Auth from "@/layouts/Auth.vue";
+import Default from "@/layouts/Default.vue";
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
@@ -8,16 +11,16 @@ const router = createRouter({
     {
       path: "/",
       name: "Home",
-      meta: { requiresAuth: true },
+      meta: { layout: Default, requiresAuth: true },
       component: () =>
         import(/* webpackChunkName: "Home" */ "@/views/Home.vue"),
     },
     {
       path: "/sign-in",
       name: "Auth",
-      meta: { layout: AuthLayout },
+      meta: { layout: Auth },
       component: () =>
-        import(/* webpackChunkName: "SignIn" */ "@/views/Auth.vue"),
+        import(/* webpackChunkName: "Auth" */ "@/views/Auth.vue"),
     },
   ],
 });

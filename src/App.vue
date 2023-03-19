@@ -1,16 +1,23 @@
 <template>
-  <component :is="layout"></component>
+  <v-app>
+    <AppBar />
+    <component :is="layout"></component>
+    <Footer />
+  </v-app>
 </template>
 
 <script setup lang="ts">
 import { computed } from "vue";
 import { useRoute } from "vue-router";
-import DefaultLayout from "@/layouts/Default.vue";
+
+// Components
+import AppBar from "@/components/AppBar.vue";
+import Footer from "@/components/Footer.vue";
 
 const route = useRoute();
 
-// handle layouts
+// Handle layouts
 const layout = computed(() => {
-  return route.meta.layout || DefaultLayout;
+  return route.meta.layout;
 });
 </script>
