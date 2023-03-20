@@ -11,7 +11,7 @@ registerPlugins(app);
 app.mount("#app");
 
 supabase.auth.onAuthStateChange((e, session) => {
-  if (session) {
-    useAppStore().setUser(session.user);
-  }
+  // Set user to null in store when no user is authenticated.
+  const user = session?.user || null;
+  useAppStore().setUser(user);
 });
