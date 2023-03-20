@@ -1,35 +1,35 @@
 // Styles
-import "@mdi/font/css/materialdesignicons.css";
-import "@fortawesome/fontawesome-free/css/all.css";
 import "vuetify/styles";
-import { aliases, fa } from "vuetify/iconsets/fa";
 
 // Composables
 import { createVuetify } from "vuetify";
 
+import {
+  aliases as iconAliases,
+  mdi as mdiSvg,
+} from "vuetify/iconsets/mdi-svg";
+
+import {
+  theme,
+  icons,
+  aliases as componentAliases,
+  defaults,
+} from "@/config/vuetify";
+
 export default createVuetify({
-  theme: {
-    defaultTheme: "light",
-    themes: {
-      light: {
-        colors: {
-          background: "#666666",
-          primary: "#fafafa",
-        },
-      },
-      dark: {
-        colors: {
-          background: "#212121",
-          primary: "#fafafa",
-        },
-      },
-    },
+  aliases: {
+    ...componentAliases,
   },
   icons: {
-    defaultSet: "fa",
-    aliases,
+    defaultSet: "mdiSvg",
+    aliases: {
+      ...icons,
+      ...iconAliases,
+    },
     sets: {
-      fa,
+      mdiSvg,
     },
   },
+  theme,
+  defaults,
 });

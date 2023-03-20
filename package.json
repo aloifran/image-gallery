@@ -8,9 +8,10 @@
         "lint": "eslint . --fix --ignore-path .gitignore"
     },
     "dependencies": {
-        "@mdi/font": "7.0.96",
+        "@mdi/js": "^7.1.96",
         "@supabase/supabase-js": "^2.10.0",
         "pinia": "^2.0.23",
+        "pinia-plugin-persistedstate": "^3.1.0",
         "roboto-fontface": "*",
         "vue": "^3.2.38",
         "vue-router": "^4.0.0",
@@ -18,7 +19,6 @@
         "webfontloader": "^1.0.0"
     },
     "devDependencies": {
-        "@fortawesome/fontawesome-free": "^6.3.0",
         "@types/node": "^18.11.9",
         "@types/webfontloader": "^1.6.35",
         "@vitejs/plugin-vue": "^3.0.3",
