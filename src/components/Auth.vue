@@ -53,9 +53,8 @@
         </v-container>
       </v-container>
 
-      <v-card-actions>
-        <v-card-subtitle>Continue with</v-card-subtitle>
-        <v-btn @click="signInProvider"> Google </v-btn>
+      <v-card-actions class="justify-center">
+        <AuthProviders />
       </v-card-actions>
     </v-card>
 
@@ -69,12 +68,12 @@
 </template>
 
 <script setup lang="ts">
+import AuthProviders from "@/components/AuthProviders.vue";
 import { ref } from "vue";
 import { supabase } from "../lib/supabase";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
-const loading = ref(false);
 const showSignUp = ref(false);
 const email = ref("");
 const password = ref("");
@@ -109,20 +108,5 @@ const signIn = async () => {
   });
   if (error) throw error;
   router.push("/");
-};
-
-const signInProvider = async () => {
-  try {
-    loading.value = true;
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: "google",
-    });
-  } catch (error) {
-    if (error instanceof Error) {
-      alert(error.message);
-    }
-  } finally {
-    loading.value = false;
-  }
 };
 </script>
