@@ -8,6 +8,7 @@ export const useAppStore = defineStore("app", {
     showDialogForm: false,
     images: new Array<Image>(),
     user: null as User | null,
+    theme: "dark",
   }),
 
   actions: {
@@ -30,5 +31,10 @@ export const useAppStore = defineStore("app", {
 
   getters: {
     isLoggedIn: (state) => !!state.user,
+  },
+
+  // persists only selected theme
+  persist: {
+    paths: ["theme"],
   },
 });

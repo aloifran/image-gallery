@@ -14,5 +14,11 @@
         <v-icon size="large"> $mdiGithub </v-icon>
       </v-btn>
     </div>
+    <ThemeSwitch v-model="store.theme" class="d-flex justify-end mr-2" />
   </v-footer>
 </template>
+
+<script setup lang="ts">
+import { useAppStore } from "@/store/app";
+const store = useAppStore();
+</script>

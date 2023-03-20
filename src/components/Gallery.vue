@@ -18,7 +18,11 @@
           >
             <v-img height="200" cover :src="img.url" :alt="img.title!" />
             <v-card-title class="text-white ma-2">{{ img.title }}</v-card-title>
-            <v-overlay :model-value="isHovering" contained scrim="gray" />
+            <v-overlay
+              :model-value="isHovering"
+              contained
+              scrim="dialog-scrim"
+            />
           </v-card>
         </v-hover>
       </div>

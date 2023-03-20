@@ -7,9 +7,9 @@ export default {
       secondary: "#6211ba",
       surface: "#383a40",
       error: "#be578d",
-      background: "#313338",
+      background: "#222222",
       "appbar-background": "#2b2d31",
-      "dialog-scrim": "#2d333b",
+      "dialog-scrim": "#333333",
     },
   },
 };
