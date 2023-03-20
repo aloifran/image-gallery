@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import { supabase } from "@/lib/supabase";
 import { Image } from "../lib/database.types";
 import type { User } from "@supabase/gotrue-js/src/lib/types";
 
@@ -10,7 +11,7 @@ export const useAppStore = defineStore("app", {
   }),
 
   actions: {
-    setUser(user: User) {
+    setUser(user: User | null) {
       this.user = user;
     },
     addImages(images: Image[]) {
@@ -19,10 +20,15 @@ export const useAppStore = defineStore("app", {
     addImage(image: Image) {
       this.images.unshift(image);
     },
+    async signOut() {
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
+      // @ts-ignore
+      this.router.push("sign-in");
+    },
   },
 
   getters: {
-    // !! transforms result into boolean
     isLoggedIn: (state) => !!state.user,
   },
 });

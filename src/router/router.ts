@@ -33,7 +33,7 @@ const router = createRouter({
   ],
 });
 
-router.beforeEach(async (to, from) => {
+router.beforeEach(async (to) => {
   const store = useAppStore();
   const requiresAuth = to.matched.some((route) => route.meta.requiresAuth);
   const isLoggedIn = store.isLoggedIn;
