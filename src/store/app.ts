@@ -1,18 +1,19 @@
 import { defineStore } from "pinia";
 import { supabase } from "@/lib/supabase";
 import { Image } from "../lib/database.types";
-import type { User } from "@supabase/gotrue-js/src/lib/types";
+// import type { User } from "@supabase/gotrue-js/src/lib/types";
 
 export const useAppStore = defineStore("app", {
   state: () => ({
     showDialogForm: false,
     images: new Array<Image>(),
-    user: null as User | null,
+    user: null,
     theme: "dark",
   }),
 
   actions: {
-    setUser(user: User | null) {
+    // TODO: fix type to remove any
+    setUser(user: any) {
       this.user = user;
     },
     addImages(images: Image[]) {
