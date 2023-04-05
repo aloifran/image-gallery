@@ -1,8 +1,6 @@
 import { defineStore } from "pinia";
 import { supabase } from "@/lib/supabase";
 import { Image } from "../lib/database.types";
-import { Provider } from "@supabase/gotrue-js/src/lib/types";
-// import type { User } from "@supabase/gotrue-js/src/lib/types";
 
 export const useAppStore = defineStore("app", {
   state: () => ({
@@ -13,14 +11,13 @@ export const useAppStore = defineStore("app", {
   }),
 
   actions: {
-    // TODO: fix type to remove any
     setUser(user: any) {
       this.user = user;
     },
-    async signInProvider(provider: Provider) {
+    async signInProvider(provider: any) {
       try {
-        const { error } = await supabase.auth.signInWithOAuth({
-          provider: provider,
+        await supabase.auth.signInWithOAuth({
+          provider,
         });
       } catch (error) {
         if (error instanceof Error) {
