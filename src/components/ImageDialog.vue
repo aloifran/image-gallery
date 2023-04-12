@@ -85,7 +85,7 @@ import { ref, onMounted } from "vue";
 import { supabase } from "../lib/supabase";
 import { Image } from "../lib/database.types";
 
-const props = defineProps<{ imgId: number }>();
+const props = defineProps<{ imgId: number | null }>();
 const emit = defineEmits(["galleryUpdated"]);
 const img = ref({} as Image);
 const prettyDate = ref("");

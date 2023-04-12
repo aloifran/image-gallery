@@ -1,11 +1,14 @@
 <template>
-  <v-dialog v-model="showModal" width="70%">
-    <ImageModal :imgId="imgId" @galleryUpdated="refreshGallery" />
+  <v-dialog v-model="imageStore.showImageDialog" width="70%">
+    <ImageDialog
+      :imgId="imageStore.imgId"
+      @galleryUpdated="imageStore.refreshGallery"
+    />
   </v-dialog>
 
   <div class="d-flex flex-column align-start pa-2">
     <div class="d-flex flex-wrap">
-      <div v-for="img in store.images" :key="img.id">
+      <div v-for="img in imageStore.images" :key="img.id">
         <v-hover v-slot="{ isHovering, props }">
           <v-card
             v-bind="props"
@@ -14,7 +17,7 @@
             width="250"
             max-height="300"
             color="rgba(20, 20, 20)"
-            @click="openModal(img.id)"
+            @click="imageStore.openImageDialog(img.id)"
           >
             <v-img height="200" cover :src="img.url" :alt="img.title!" />
             <v-card-title class="text-white ma-2">{{ img.title }}</v-card-title>
@@ -37,74 +40,16 @@
 </template>
 
 <script setup lang="ts">
-import { supabase } from "../lib/supabase";
-import { Image } from "../lib/database.types";
 import { ref, onMounted } from "vue";
-import { useAppStore } from "@/store/app";
-import ImageModal from "./ImageModal.vue";
+import { useImageStore } from "@/store/image";
+import ImageDialog from "./ImageDialog.vue";
 
-const store = useAppStore();
-
-const imgId = ref(0);
-const showModal = ref(false);
+const imageStore = useImageStore();
 // const loadMore = ref(false);
 
 onMounted(() => {
-  getImagesBatch();
+  imageStore.getImagesBatch();
 });
-
-const getImagesBatch = async () => {
-  const images = store.images;
-
-  const sortedImages = images.slice().sort((a, b) => a.id - b.id);
-  let lastImgId = images.length === 0 ? 0 : sortedImages[0].id;
-
-  if (lastImgId === 0) {
-    // firstImageBatch
-    let { data, error: selectError } = await supabase
-      .from("images")
-      .select()
-      .order("id", { ascending: false })
-      .limit(12);
-
-    if (selectError) {
-      throw selectError;
-    }
-    store.addImages(data as Image[]);
-
-    // images.length > 11 ? (loadMore.value = true) : (loadMore.value = false);
-  } else {
-    // nextImageBatch
-    let { data, error: selectError } = await supabase
-      .from("images")
-      .select()
-      .lt("id", lastImgId)
-      .gte("id", lastImgId - 12)
-      .order("id", { ascending: false })
-      .limit(12);
-
-    if (selectError) {
-      throw selectError;
-    }
-    store.addImages(data as Image[]);
-
-    // if no more images
-    // if (data?.length! < 12) {
-    //   loadMore.value = false;
-    // }
-  }
-};
-
-const refreshGallery = () => {
-  showModal.value = false;
-  store.images = [];
-  getImagesBatch();
-};
-
-const openModal = (id: number) => {
-  imgId.value = id;
-  showModal.value = true;
-};
 </script>
 
 <!-- <style scoped>

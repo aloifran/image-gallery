@@ -48,11 +48,13 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { supabase } from "../lib/supabase";
+import { useImageStore } from "@/store/image";
 import { useAppStore } from "@/store/app";
 import { Image } from "../lib/database.types";
 
 const props = defineProps<{ modelValue: boolean }>();
 const store = useAppStore();
+const imageStore = useImageStore();
 const { id } = store.user!;
 const form = ref();
 const file = ref();
@@ -98,7 +100,7 @@ const uploadImage = async () => {
   addImage(fileUrl);
   loading.value = false;
   form.value.reset();
-  store.showDialogForm = !store.showDialogForm;
+  imageStore.showDialogForm = !imageStore.showDialogForm;
 };
 
 const addImage = async (fileUrl: string) => {
@@ -111,7 +113,7 @@ const addImage = async (fileUrl: string) => {
   if (error) {
     throw error;
   }
-  store.addImage(img as Image);
+  imageStore.addImage(img as Image);
 };
 
 const handleFile = (e: Event) => {

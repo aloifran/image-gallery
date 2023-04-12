@@ -1,11 +1,10 @@
 import { defineStore } from "pinia";
 import { supabase } from "@/lib/supabase";
-import { Image } from "../lib/database.types";
+
+// store for auth and global app tasks
 
 export const useAppStore = defineStore("app", {
   state: () => ({
-    showDialogForm: false,
-    images: new Array<Image>(),
     user: null,
     theme: "dark",
   }),
@@ -24,12 +23,6 @@ export const useAppStore = defineStore("app", {
           alert(error.message);
         }
       }
-    },
-    addImages(images: Image[]) {
-      this.images.push(...images);
-    },
-    addImage(image: Image) {
-      this.images.unshift(image);
     },
     async signOut() {
       const { error } = await supabase.auth.signOut();
