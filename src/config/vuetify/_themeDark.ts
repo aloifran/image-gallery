@@ -1,4 +1,3 @@
-// 👉  By using themes this way
 export default {
   dark: {
     dark: true,
@@ -8,7 +7,7 @@ export default {
       surface: "#383a40",
       error: "#be578d",
       background: "#222222",
-      "appbar-background": "#2b2d31",
+      "bar-bg": "#2b2d31",
       "dialog-scrim": "#333333",
     },
   },

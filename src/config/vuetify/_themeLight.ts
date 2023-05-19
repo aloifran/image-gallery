@@ -7,7 +7,7 @@ export default {
       surface: "#e6edf5",
       error: "#ff4081",
       background: "#d5dce3",
-      "appbar-background": "#e6e8ed",
+      "bar-bg": "#e6e8ed",
       "dialog-scrim": "#666666",
     },
   },
