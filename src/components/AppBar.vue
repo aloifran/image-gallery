@@ -5,7 +5,7 @@
         variant="outlined"
         prepend-icon="$mdiPlus"
         class="my-10 mx-5"
-        @click="imageStore.showDialogForm = !imageStore.showDialogForm"
+        @click="imageStore.showUploaderDialog = !imageStore.showUploaderDialog"
         >Add image</v-btn
       >
       <v-btn variant="outlined" class="my-10 mx-5" @click="store.signOut"

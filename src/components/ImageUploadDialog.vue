@@ -2,12 +2,13 @@
   <v-dialog
     :model-value="modelValue"
     @update:model-value="$emit('update:modelValue', $event)"
-    width="40%"
+    width="400"
+    scrim="dialog-scrim"
   >
-    <v-card class="bg-grey-darken-4 text-white rounded elevation-12">
+    <v-card class="rounded elevation-12">
       <v-container>
         <v-form
-          class="d-flex flex-column text-white pa-2"
+          class="d-flex flex-column pa-2"
           ref="form"
           validate-on="submit"
           @submit.prevent="uploadImage"
@@ -52,9 +53,11 @@ import { useImageStore } from "@/store/image";
 import { useAppStore } from "@/store/app";
 import { Image } from "../lib/database.types";
 
-const props = defineProps<{ modelValue: boolean }>();
+defineProps<{ modelValue: boolean }>();
+
 const store = useAppStore();
 const imageStore = useImageStore();
+
 const { id } = store.user!;
 const form = ref();
 const file = ref();
@@ -100,7 +103,7 @@ const uploadImage = async () => {
   addImage(fileUrl);
   loading.value = false;
   form.value.reset();
-  imageStore.showDialogForm = !imageStore.showDialogForm;
+  imageStore.showUploaderDialog = !imageStore.showUploaderDialog;
 };
 
 const addImage = async (fileUrl: string) => {
