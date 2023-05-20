@@ -2,13 +2,18 @@
   <v-app-bar elevation="1" class="px-2" color="bar-bg">
     <div v-if="store.isLoggedIn" class="d-flex justify-space-between w-100">
       <v-btn
-        variant="outlined"
+        variant="elevated"
+        color="primary"
         prepend-icon="$mdiPlus"
         class="my-10 mx-5"
-        @click="imageStore.showUploaderDialog = !imageStore.showUploaderDialog"
-        >Add image</v-btn
+        @click="imageStore.showUploadDialog = !imageStore.showUploadDialog"
+        >Upload</v-btn
       >
-      <v-btn variant="outlined" class="my-10 mx-5" @click="store.signOut"
+      <v-btn
+        variant="elevated"
+        color="primary"
+        class="my-10 mx-5"
+        @click="store.showSignOutDialog = true"
         >Sign out</v-btn
       >
     </div>

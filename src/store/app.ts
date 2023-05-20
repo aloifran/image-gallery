@@ -3,10 +3,18 @@ import { supabase } from "@/lib/supabase";
 
 // store for auth and global app tasks
 
+// TODO: remove any from user, instead add a user type
+interface AppState {
+  user: any;
+  theme: string;
+  showSignOutDialog: boolean;
+}
+
 export const useAppStore = defineStore("app", {
-  state: () => ({
+  state: (): AppState => ({
     user: null,
     theme: "dark",
+    showSignOutDialog: false,
   }),
 
   actions: {
@@ -24,11 +32,13 @@ export const useAppStore = defineStore("app", {
         }
       }
     },
+
     async signOut() {
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
       // @ts-ignore
       this.router.push("sign-in");
+      this.showSignOutDialog = false;
     },
   },
 

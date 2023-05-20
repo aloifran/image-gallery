@@ -8,7 +8,7 @@ export default {
       error: "#ff4081",
       background: "#d5dce3",
       "bar-bg": "#e6e8ed",
-      "dialog-scrim": "#666666",
+      "dialog-scrim": "#777777",
     },
   },
 };
