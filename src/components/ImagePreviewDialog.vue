@@ -1,15 +1,15 @@
 <template>
   <v-dialog
     scrim="dialog-scrim"
-    width="300"
+    width="600"
     :model-value="modelValue"
     @update:model-value="handleModelChange"
   >
-    <v-card width="500" v-if="imageStore.image">
+    <v-card v-if="imageStore.image">
       <v-img
         :src="imageStore.image!.url"
         :alt="imageStore.image!.title!"
-        max-height="400"
+        max-height="500"
       >
         <template v-slot:placeholder>
           <Loader />
@@ -27,11 +27,10 @@
           >Uploaded on {{ imageStore.prettyDate }}</v-card-subtitle
         >
 
-        <div class="d-flex mt-5">
+        <div class="d-flex mt-4">
           <!-- @click="showEdit = true" -->
-          <v-btn class="mx-2" size="small" variant="outlined">Edit</v-btn>
+          <v-btn variant="outlined" class="mx-4">Edit</v-btn>
           <v-btn
-            size="small"
             variant="outlined"
             color="error"
             @click="imageStore.showImageDialogDelete = true"

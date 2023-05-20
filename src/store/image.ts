@@ -4,28 +4,46 @@ import { supabase } from "@/lib/supabase";
 
 // store for image management tasks
 
+interface formUpload {
+  title: string;
+  description: string;
+  file: null | File;
+}
+
 interface ImageState {
-  showUploaderDialog: boolean;
+  showUploadDialog: boolean;
   showImageDialogPreview: boolean;
   showImageDialogDelete: boolean;
   images: Image[];
   image: null | Image;
   imgId: null | number;
   prettyDate: string;
+  uploadForm: formUpload;
 }
+
+const uploadFormDefaults: formUpload = {
+  title: "",
+  description: "",
+  file: null,
+};
 
 export const useImageStore = defineStore("image", {
   state: (): ImageState => ({
-    showUploaderDialog: false,
+    showUploadDialog: false,
     showImageDialogPreview: false,
     showImageDialogDelete: false,
     images: new Array<Image>(),
     imgId: null,
     image: null,
     prettyDate: "",
+    uploadForm: uploadFormDefaults,
   }),
 
   actions: {
+    resetUploadForm() {
+      this.uploadForm = uploadFormDefaults;
+    },
+
     addImages(images: Image[]) {
       this.images.push(...images);
     },

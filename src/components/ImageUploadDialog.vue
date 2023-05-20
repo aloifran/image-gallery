@@ -2,11 +2,12 @@
   <v-dialog
     :model-value="modelValue"
     @update:model-value="$emit('update:modelValue', $event)"
-    width="400"
+    width="500"
     scrim="dialog-scrim"
   >
-    <v-card class="rounded elevation-12">
+    <v-card class="elevation-12 text-center">
       <v-container>
+        <v-card-title>Upload an image</v-card-title>
         <v-form
           class="d-flex flex-column pa-2"
           ref="form"
@@ -37,9 +38,24 @@
             :rules="formRules"
             @change="handleFile"
           />
-          <v-btn type="submit" color="primary" :loading="loading">
-            Upload
-          </v-btn>
+          <div class="d-flex justify-center">
+            <v-btn
+              variant="outlined"
+              :loading="loading"
+              class="mx-4"
+              @click="imageStore.showUploadDialog = false"
+            >
+              Cancel
+            </v-btn>
+            <v-btn
+              type="submit"
+              variant="elevated"
+              color="primary"
+              :loading="loading"
+            >
+              Upload
+            </v-btn>
+          </div>
         </v-form>
       </v-container>
     </v-card>
@@ -103,7 +119,7 @@ const uploadImage = async () => {
   addImage(fileUrl);
   loading.value = false;
   form.value.reset();
-  imageStore.showUploaderDialog = !imageStore.showUploaderDialog;
+  imageStore.showUploadDialog = !imageStore.showUploadDialog;
 };
 
 const addImage = async (fileUrl: string) => {
