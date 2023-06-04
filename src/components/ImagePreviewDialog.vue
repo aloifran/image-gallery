@@ -1,7 +1,7 @@
 <template>
   <v-dialog
     scrim="dialog-scrim"
-    width="600"
+    width="700"
     :model-value="modelValue"
     @update:model-value="handleModelChange"
   >
@@ -17,26 +17,42 @@
       </v-img>
 
       <v-container>
-        <v-card-title class="text-h5">{{
-          imageStore.image!.title
-        }}</v-card-title>
-        <v-card-text class="font-weight-light">{{
-          imageStore.image!.description
-        }}</v-card-text>
-        <v-card-subtitle
-          >Uploaded on {{ imageStore.prettyDate }}</v-card-subtitle
-        >
+        <v-form>
+          <v-card-text>
+            <v-text-field
+              density="compact"
+              v-model="imageStore.image!.title"
+              :variant="imageStore.showEditableFields ? 'outlined' : 'plain'"
+              :class="{
+                'not-clickable title': !imageStore.showEditableFields,
+                title: imageStore.showEditableFields,
+              }"
+            />
+            <v-text-field
+              density="compact"
+              v-model="imageStore.image!.description"
+              :variant="imageStore.showEditableFields ? 'outlined' : 'plain'"
+              :class="{ 'not-clickable': !imageStore.showEditableFields }"
+            />
+          </v-card-text>
 
-        <div class="d-flex mt-4">
-          <!-- @click="showEdit = true" -->
-          <v-btn variant="outlined" class="mx-4">Edit</v-btn>
-          <v-btn
-            variant="outlined"
-            color="error"
-            @click="imageStore.showImageDialogDelete = true"
-            >Delete</v-btn
+          <v-card-subtitle
+            >Uploaded on {{ imageStore.prettyDate }}</v-card-subtitle
           >
-        </div>
+
+          <div class="d-flex mt-6 mb-2">
+            <v-btn variant="elevated" class="mx-4" @click="handleClickChange">{{
+              imageStore.showEditableFields ? "Save" : "Edit"
+            }}</v-btn>
+
+            <v-btn
+              variant="elevated"
+              color="error"
+              @click="handleClickCancelDelete"
+              >{{ imageStore.showEditableFields ? "Cancel" : "Delete" }}</v-btn
+            >
+          </div>
+        </v-form>
       </v-container>
     </v-card>
   </v-dialog>
@@ -50,6 +66,36 @@ const emit = defineEmits(["update:modelValue"]);
 defineProps<{ modelValue: boolean }>();
 const imageStore = useImageStore();
 
+const handleClickChange = () => {
+  if (!imageStore.showEditableFields) {
+    // edit
+    imageStore.showEditableFields = true;
+    return;
+  }
+  if (imageStore.showEditableFields) {
+    // save
+    imageStore.showEditableFields = false;
+    imageStore.updateImageData();
+    return;
+  }
+};
+
+const handleClickCancelDelete = () => {
+  if (!imageStore.showEditableFields) {
+    // delete
+    imageStore.showImageDialogDelete = true;
+    return;
+  }
+  if (imageStore.showEditableFields) {
+    // cancel
+    imageStore.showEditableFields = false;
+    imageStore.restoreImageBackup();
+    return;
+  }
+};
+
+// TODO: set proper type to event
+// to avoid the previous image to show up while loading the next one
 const handleModelChange = (event: any) => {
   emit("update:modelValue", event);
 
@@ -59,35 +105,19 @@ const handleModelChange = (event: any) => {
 };
 </script>
 
-<!-- EDIT IMAGE -->
-<!-- <v-container
-      v-else
-      class="d-flex justify-center align-center bg-grey-darken-4"
-    >
-      <v-form class="d-flex flex-column w-25" @submit.prevent="editImage">
-        <v-text-field
-          label="Title"
-          v-model="img.title"
-          variant="outlined"
-          density="compact"
-        />
-        <v-textarea
-          label="Description"
-          v-model="img.description"
-          variant="outlined"
-          density="compact"
-          no-resize
-        />
-        <v-container>
-          <v-btn
-            class="mx-2"
-            size="small"
-            variant="outlined"
-            @click="showEdit = false"
-          >
-            Cancel
-          </v-btn>
-          <v-btn size="small" variant="outlined" type="submit"> Save </v-btn>
-        </v-container>
-      </v-form>
-    </v-container> -->
+<style>
+.v-card-text {
+  padding: 0 1rem 1rem;
+  margin-bottom: -1rem;
+}
+
+.title {
+  font-weight: 600;
+  font-size: 1.5rem !important;
+  margin-bottom: -1rem;
+}
+
+.not-clickable {
+  pointer-events: none;
+}
+</style>
