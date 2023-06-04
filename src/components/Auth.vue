@@ -1,56 +1,54 @@
 <template>
-  <v-container class="d-flex flex-column align-center justify-center mx-auto">
-    <v-card width="500" class="rounded-lg elevation-4">
+  <v-container
+    class="d-flex flex-column fill-height align-center justify-center mx-auto"
+  >
+    <v-card width="400" class="rounded-lg elevation-4">
       <v-container v-if="!showSignUp">
         <v-card-title class="text-center">Sign in</v-card-title>
-        <v-container>
-          <v-form
-            class="d-flex flex-column pa-2"
-            ref="form"
-            validate-on="submit"
-            @submit.prevent="signIn"
-          >
-            <v-text-field
-              v-model="email"
-              label="Email"
-              type="email"
-              :rules="formRules"
-            />
-            <v-text-field
-              v-model="password"
-              label="Password"
-              type="password"
-              :rules="formRules"
-            />
-            <v-btn type="submit" color="primary">Sign In</v-btn>
-          </v-form>
-        </v-container>
+        <v-form
+          class="d-flex flex-column pa-2"
+          ref="form"
+          validate-on="submit"
+          @submit.prevent="signIn"
+        >
+          <v-text-field
+            v-model="email"
+            label="Email"
+            type="email"
+            :rules="formRules"
+          />
+          <v-text-field
+            v-model="password"
+            label="Password"
+            type="password"
+            :rules="formRules"
+          />
+          <v-btn type="submit" color="primary">Sign In</v-btn>
+        </v-form>
       </v-container>
 
       <v-container v-if="showSignUp">
         <v-card-title class="text-center">Sign up</v-card-title>
-        <v-container>
-          <v-form
-            class="d-flex flex-column pa-2"
-            ref="form"
-            validate-on="submit"
-            @submit.prevent="signUp"
-          >
-            <v-text-field
-              v-model="email"
-              label="Email"
-              type="email"
-              :rules="formRules"
-            />
-            <v-text-field
-              v-model="password"
-              label="Password"
-              type="password"
-              :rules="formRules"
-            />
-            <v-btn type="submit" color="primary">Sign Up</v-btn>
-          </v-form>
-        </v-container>
+        <v-form
+          class="d-flex flex-column pa-2"
+          ref="form"
+          validate-on="submit"
+          @submit.prevent="signUp"
+        >
+          <v-text-field
+            v-model="email"
+            label="Email"
+            type="email"
+            :rules="formRules"
+          />
+          <v-text-field
+            v-model="password"
+            label="Password"
+            type="password"
+            :rules="formRules"
+          />
+          <v-btn type="submit" color="primary">Sign Up</v-btn>
+        </v-form>
       </v-container>
 
       <v-card-actions class="justify-center">

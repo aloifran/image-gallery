@@ -5,9 +5,9 @@
     width="500"
     scrim="dialog-scrim"
   >
-    <v-card class="elevation-12 text-center">
+    <v-card class="elevation-12">
       <v-container>
-        <v-card-title>Upload an image</v-card-title>
+        <v-card-title class="text-center">Upload an image</v-card-title>
         <v-form
           class="d-flex flex-column pa-2"
           ref="form"
@@ -41,7 +41,6 @@
           <div class="d-flex justify-center">
             <v-btn
               variant="outlined"
-              :loading="loading"
               class="mx-4"
               @click="imageStore.showUploadDialog = false"
             >

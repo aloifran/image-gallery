@@ -3,14 +3,16 @@
     class="mx-auto rounded-lg elevation-4"
     width="250"
     max-height="300"
-    @click="imageStore.openImageDialog(img.id)"
+    @click="imageStore.openImageDialog(img)"
   >
     <v-img height="200" cover :src="img.url" :alt="img.title!">
       <template v-slot:placeholder>
         <Loader />
       </template>
     </v-img>
-    <v-card-title class="ma-2">{{ img.title }}</v-card-title>
+    <v-card-title class="text-subtitle-1 font-weight-regular">{{
+      img.title
+    }}</v-card-title>
   </v-card>
 </template>
 
