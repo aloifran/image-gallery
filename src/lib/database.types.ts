@@ -72,3 +72,7 @@ export interface Database {
 }
 
 export type Image = Database["public"]["Tables"]["images"]["Row"];
+
+export interface ImageWithBackup extends Image {
+  backup?: Image;
+}

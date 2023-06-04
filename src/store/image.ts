@@ -1,10 +1,10 @@
 import { defineStore } from "pinia";
-import { Image } from "../lib/database.types";
+import { ImageWithBackup } from "../lib/database.types";
 import { supabase } from "@/lib/supabase";
 
 // store for image management tasks
 
-interface formUpload {
+interface uploadForm {
   title: string;
   description: string;
   file: null | File;
@@ -14,14 +14,15 @@ interface ImageState {
   showUploadDialog: boolean;
   showImageDialogPreview: boolean;
   showImageDialogDelete: boolean;
-  images: Image[];
-  image: null | Image;
+  showEditableFields: boolean;
+  images: ImageWithBackup[];
+  image: null | ImageWithBackup;
   imgId: null | number;
   prettyDate: string;
-  uploadForm: formUpload;
+  uploadForm: uploadForm;
 }
 
-const uploadFormDefaults: formUpload = {
+const uploadFormDefaults: uploadForm = {
   title: "",
   description: "",
   file: null,
@@ -32,7 +33,8 @@ export const useImageStore = defineStore("image", {
     showUploadDialog: false,
     showImageDialogPreview: false,
     showImageDialogDelete: false,
-    images: new Array<Image>(),
+    showEditableFields: false,
+    images: new Array<ImageWithBackup>(),
     imgId: null,
     image: null,
     prettyDate: "",
@@ -40,72 +42,56 @@ export const useImageStore = defineStore("image", {
   }),
 
   actions: {
+    addImage(image: ImageWithBackup) {
+      this.images.unshift(image);
+    },
+
+    openImageDialog(img: ImageWithBackup) {
+      this.showImageDialogPreview = true;
+      this.image = img;
+      this.imgId = img.id;
+      this.prettyDate = new Date(img.created_at).toLocaleDateString("de-DE");
+    },
+
     resetUploadForm() {
       this.uploadForm = uploadFormDefaults;
     },
 
-    addImages(images: Image[]) {
-      this.images.push(...images);
-    },
-
-    addImage(image: Image) {
-      this.images.unshift(image);
-    },
-
-    openImageDialog(id: number) {
-      this.imgId = id;
-      this.getImageData();
-      this.showImageDialogPreview = true;
-    },
-
-    refreshGallery() {
-      this.showImageDialogPreview = false;
-      this.showImageDialogDelete = false;
-      this.images = [];
-      this.getImagesBatch();
-    },
-
-    async getImageData() {
-      const { data: image, error: selectError } = await supabase
-        .from("images")
-        .select()
-        .eq("id", this.imgId)
-        .single();
-
-      if (selectError) {
-        throw selectError;
-      }
-
-      this.image = image;
-      this.prettyDate = new Date(image!.created_at).toLocaleDateString("de-DE");
-    },
-
     resetImageData() {
-      // do this against a default object?
       this.image = null;
       this.imgId = null;
       this.prettyDate = "";
     },
 
-    // TODO: refactor edit image data logic
-    // async editimage() {
-    //   const { error: updateError } = await supabase
-    //     .from("images")
-    //     .update({
-    //       title: this.image!.title,
-    //       description: this.image!.description,
-    //     })
-    //     .eq("id", this.imgId);
+    restoreImageBackup() {
+      // if text values have changed, restore previous
+      if (
+        this.image!.title != this.image!.backup!.title ||
+        this.image!.description != this.image!.backup!.description
+      ) {
+        this.image = Object.assign(this.image!, this.image, this.image?.backup);
+      }
+    },
 
-    //   if (updateError) {
-    //     throw updateError;
-    //   }
+    async updateImageData() {
+      const { error: updateError } = await supabase
+        .from("images")
+        .update({
+          title: this.image!.title,
+          description: this.image!.description,
+        })
+        .eq("id", this.imgId);
 
-    //   showEdit.value = false;
-    //   this.getImageData();
+      if (updateError) {
+        throw updateError;
+      }
 
-    //   this.refreshGallery();
-    // },
+      // after update, set backup to reflect change
+      this.image!.backup!.title = this.image!.title;
+      this.image!.backup!.description = this.image!.description;
+
+      this.showEditableFields = false;
+    },
 
     async deleteImage() {
       const filePath = this.image!.url.split("images/")[1].split("?")[0];
@@ -125,49 +111,47 @@ export const useImageStore = defineStore("image", {
         throw deleteDbError;
       }
 
-      this.refreshGallery();
+      // Update gallery array.
+      const updatedImages = this.images.filter((img) => img !== this.image);
+      this.addBackupToImageArray(updatedImages);
+
+      this.showImageDialogPreview = false;
+      this.showImageDialogDelete = false;
     },
 
     async getImagesBatch() {
-      const images = this.images;
+      const { data, error: selectError } = await supabase
+        .from("images")
+        .select()
+        .order("id", { ascending: false });
 
-      const sortedImages = images.slice().sort((a, b) => a.id - b.id);
-      const lastImgId = images.length === 0 ? 0 : sortedImages[0].id;
-
-      if (lastImgId === 0) {
-        // firstImageBatch
-        const { data, error: selectError } = await supabase
-          .from("images")
-          .select()
-          .order("id", { ascending: false })
-          .limit(12);
-
-        if (selectError) {
-          throw selectError;
-        }
-        this.addImages(data as Image[]);
-
-        // images.length > 11 ? (loadMore.value = true) : (loadMore.value = false);
-      } else {
-        // nextImageBatch
-        const { data, error: selectError } = await supabase
-          .from("images")
-          .select()
-          .lt("id", lastImgId)
-          .gte("id", lastImgId - 12)
-          .order("id", { ascending: false })
-          .limit(12);
-
-        if (selectError) {
-          throw selectError;
-        }
-        this.addImages(data as Image[]);
-
-        // if no more images
-        // if (data?.length! < 12) {
-        //   loadMore.value = false;
-        // }
+      if (selectError) {
+        throw selectError;
       }
+
+      this.addBackupToImageArray(data);
+
+      //TODO: apply a pagination strategy to get more images
+      // get the nextImageBatch
+      // const { data, error: selectError } = await supabase
+      //   .from("images")
+      //   .select()
+      //   .lt("id", lastImgId)
+      //   .gte("id", lastImgId - 12)
+      //   .order("id", { ascending: false })
+      //   .limit(12);
+
+      // if (selectError) {
+      //   throw selectError;
+      // }
+      // this.addImages(data as Image[]);
+    },
+
+    // Adds a backup to each image, to keep initial values
+    addBackupToImageArray(imageArray: ImageWithBackup[]) {
+      this.images = imageArray.map((img) => {
+        return { ...img, backup: { ...img } };
+      });
     },
   },
 });
