@@ -1,6 +1,5 @@
-// By importing the icons this way,
-// they will be treeShakable and the production build will only include these icons
-// in the bundle.
+// By importing the icons this way, they will be treeShakable
+// and the production build will only include these icons in the bundle.
 
 export {
   mdiGoogle,

@@ -3,8 +3,8 @@ export default {
     dark: false,
     colors: {
       primary: "#90c4cb",
-      secondary: "#9953e6",
-      surface: "#e6edf5",
+      secondary: "#F0848B",
+      surface: "#e6e8ed",
       error: "#ff4081",
       background: "#d5dce3",
       "bar-bg": "#e6e8ed",

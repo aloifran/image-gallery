@@ -6,60 +6,70 @@
       <v-container v-if="!showSignUp">
         <v-card-title class="text-center">Sign in</v-card-title>
         <v-form
-          class="d-flex flex-column pa-2"
+          class="d-flex flex-column pa-3"
           ref="form"
           validate-on="submit"
           @submit.prevent="signIn"
         >
           <v-text-field
+            class="my-1"
             v-model="email"
             label="Email"
             type="email"
             :rules="formRules"
           />
           <v-text-field
+            class="my-1"
             v-model="password"
             label="Password"
             type="password"
             :rules="formRules"
           />
-          <v-btn type="submit" color="primary">Sign In</v-btn>
+          <v-btn type="submit" color="primary" class="my-1">Sign In</v-btn>
         </v-form>
       </v-container>
 
       <v-container v-if="showSignUp">
         <v-card-title class="text-center">Sign up</v-card-title>
         <v-form
-          class="d-flex flex-column pa-2"
+          class="d-flex flex-column pa-3"
           ref="form"
           validate-on="submit"
           @submit.prevent="signUp"
         >
           <v-text-field
+            class="my-1"
             v-model="email"
             label="Email"
             type="email"
             :rules="formRules"
           />
           <v-text-field
+            class="my-1"
             v-model="password"
             label="Password"
             type="password"
             :rules="formRules"
           />
-          <v-btn type="submit" color="primary">Sign Up</v-btn>
+          <v-btn type="submit" color="primary" class="my-1">Sign Up</v-btn>
         </v-form>
       </v-container>
 
-      <v-card-actions class="justify-center">
-        <AuthProviders />
-      </v-card-actions>
+      <AuthProviders class="mb-6" />
     </v-card>
 
-    <v-btn v-if="!showSignUp" variant="plain" @click="() => (showSignUp = true)"
+    <v-btn
+      v-if="!showSignUp"
+      class="mt-2"
+      variant="plain"
+      @click="() => (showSignUp = true)"
       >or sign up</v-btn
     >
-    <v-btn v-else variant="plain" @click="() => (showSignUp = false)"
+    <v-btn
+      v-else
+      class="mt-2"
+      variant="plain"
+      @click="() => (showSignUp = false)"
       >or sign in</v-btn
     >
   </v-container>
