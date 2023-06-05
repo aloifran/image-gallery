@@ -20,6 +20,8 @@ interface ImageState {
   imgId: null | number;
   prettyDate: string;
   uploadForm: uploadForm;
+  search: string;
+  searchableFields: string[];
 }
 
 const uploadFormDefaults: uploadForm = {
@@ -39,6 +41,8 @@ export const useImageStore = defineStore("image", {
     image: null,
     prettyDate: "",
     uploadForm: uploadFormDefaults,
+    search: "",
+    searchableFields: ["title", "description"],
   }),
 
   actions: {
@@ -152,6 +156,29 @@ export const useImageStore = defineStore("image", {
       this.images = imageArray.map((img) => {
         return { ...img, backup: { ...img } };
       });
+    },
+  },
+
+  getters: {
+    totalImages: (state) => state.images.length,
+
+    filteredImages(state) {
+      if (state.search !== "") {
+        return state.images.filter((img) =>
+          state.searchableFields
+            .map((field) => img[field as keyof ImageWithBackup])
+            .some(
+              (value) =>
+                value &&
+                value
+                  .toString()
+                  .toLowerCase()
+                  .includes(state.search?.toLowerCase() ?? "")
+            )
+        );
+      } else {
+        return state.images;
+      }
     },
   },
 });

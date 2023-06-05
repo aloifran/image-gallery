@@ -1,8 +1,8 @@
 <template>
   <div class="d-flex flex-column align-start pa-2">
     <div class="d-flex flex-wrap">
-      <!-- ImageCard loop -->
-      <div class="pa-2" v-for="img in imageStore.images" :key="img.id">
+      <!-- images loop that renders search results -->
+      <div class="pa-2" v-for="img in imageStore.filteredImages" :key="img.id">
         <ImageCard v-bind="{ img }" />
       </div>
     </div>
