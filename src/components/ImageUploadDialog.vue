@@ -20,7 +20,6 @@
             variant="outlined"
             density="compact"
             class="my-2"
-            :rules="formRules"
           />
           <v-text-field
             v-model="description"

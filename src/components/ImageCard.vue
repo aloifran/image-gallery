@@ -10,9 +10,11 @@
         <Loader />
       </template>
     </v-img>
-    <v-card-title class="text-subtitle-1 font-weight-regular">{{
+
+    <!-- DISABLED for now -->
+    <!-- <v-card-title class="text-subtitle-1 font-weight-regular">{{
       img.title
-    }}</v-card-title>
+    }}</v-card-title> -->
   </v-card>
 </template>
 
