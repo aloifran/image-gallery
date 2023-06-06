@@ -1,21 +1,29 @@
 <template>
-  <v-card
-    class="mx-auto rounded-lg elevation-4"
-    width="250"
-    max-height="300"
-    @click="imageStore.openImageDialog(img)"
-  >
-    <v-img height="200" cover :src="img.url" :alt="img.title!">
-      <template v-slot:placeholder>
-        <Loader />
-      </template>
-    </v-img>
+  <v-hover v-slot="{ isHovering, props }">
+    <v-card
+      :ripple="false"
+      v-bind="props"
+      class="mx-auto rounded-lg elevation-4"
+      width="250"
+      max-height="300"
+      @click="imageStore.openImageDialog(img)"
+    >
+      <!-- overlay on hover -->
+      <v-overlay contained :scrim="false" :model-value="isHovering" />
+      <v-img height="200" cover :src="img.url" :alt="img.title!">
+        <template v-slot:placeholder>
+          <Loader />
+        </template>
 
-    <!-- DISABLED for now -->
-    <!-- <v-card-title class="text-subtitle-1 font-weight-regular">{{
-      img.title
-    }}</v-card-title> -->
-  </v-card>
+        <div
+          v-if="isHovering"
+          class="text-subtitle-1 text-white font-weight-regular d-flex flex-column-reverse fill-height pa-4"
+        >
+          {{ img.title }}
+        </div>
+      </v-img>
+    </v-card>
+  </v-hover>
 </template>
 
 <script setup lang="ts">
