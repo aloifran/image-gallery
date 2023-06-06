@@ -3,6 +3,7 @@ import { createApp } from "vue";
 import { useAppStore } from "@/store/app";
 import { supabase } from "@/lib/supabase";
 import { registerPlugins } from "@/plugins";
+import "./styles/_progress-bar.css";
 
 const app = createApp(App);
 

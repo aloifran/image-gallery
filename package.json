@@ -10,6 +10,8 @@
     "dependencies": {
         "@mdi/js": "^7.1.96",
         "@supabase/supabase-js": "^2.10.0",
+        "@types/nprogress": "^0.2.0",
+        "nprogress": "^0.2.0",
         "pinia": "^2.0.23",
         "pinia-plugin-persistedstate": "^3.1.0",
         "roboto-fontface": "*",

@@ -43,7 +43,11 @@ export const useAppStore = defineStore("app", {
   },
 
   getters: {
-    async isLoggedIn(state) {
+    isLoggedIn(state) {
+      return !!state.user;
+    },
+
+    async isUserReady(state) {
       let retries = 0;
       const maxRetries = 4;
       while (!state.user && retries < maxRetries) {

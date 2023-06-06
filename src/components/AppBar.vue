@@ -13,10 +13,9 @@
         >Upload</v-btn
       >
 
-      <span v-if="store.isLoggedIn">{{ imageStore.totalImages }} images</span>
+      <span>{{ imageStore.totalImages }} images</span>
 
       <v-text-field
-        v-if="store.isLoggedIn"
         variant="solo"
         density="compact"
         label="Search by title or description"
