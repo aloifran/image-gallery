@@ -43,7 +43,15 @@ export const useAppStore = defineStore("app", {
   },
 
   getters: {
-    isLoggedIn: (state) => !!state.user,
+    async isLoggedIn(state) {
+      let retries = 0;
+      const maxRetries = 4;
+      while (!state.user && retries < maxRetries) {
+        await new Promise((resolve) => setTimeout(resolve, 200));
+        retries++;
+      }
+      return !!state.user; // return true if state.user is truthy.
+    },
   },
 
   // persists only selected theme

@@ -173,7 +173,7 @@ export const useImageStore = defineStore("image", {
                 value
                   .toString()
                   .toLowerCase()
-                  .includes(state.search?.toLowerCase() ?? "")
+                  .includes(state.search?.toLowerCase() || "")
             )
         );
       } else {

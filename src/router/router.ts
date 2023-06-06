@@ -33,35 +33,25 @@ const router = createRouter({
   ],
 });
 
-const USER_PROFILE_RETRY_INTERVAL_MS = 1000;
-const USER_PROFILE_MAX_RETRIES = 3;
-
 router.beforeEach(async (to) => {
   const store = useAppStore();
 
-  // Rules
+  // Rules & Guards
+  const isLoggedIn = await store.isLoggedIn;
   const requiresAuth = to.matched.some((route) => route.meta.requiresAuth);
-  const isLoggedIn = store.isLoggedIn;
   const isLoginPage = to.name === "sign-in";
 
-  // Guards
-  // Wait for provider login
-  let attempt: number = 0;
+  // Check if the URL contains an access token
+  const tokenIndex = to.fullPath.indexOf("#access_token=");
+  if (tokenIndex !== -1) {
+    // Remove the access token from the URL
+    const updatedPath = to.fullPath.substring(0, tokenIndex);
+    return updatedPath;
+  }
 
-  const userProfile = (ms: number) =>
-    new Promise((resolve) => setTimeout(resolve, ms));
-
-  if (requiresAuth) {
-    while (!store.isLoggedIn) {
-      await userProfile(USER_PROFILE_RETRY_INTERVAL_MS);
-      attempt++;
-      console.log(`User profile loading... attempt: ${attempt}`);
-
-      // if no credentials found, redirect to login page
-      if (attempt === USER_PROFILE_MAX_RETRIES) {
-        return "sign-in";
-      }
-    }
+  // If private route and user not logged in
+  if (requiresAuth && !isLoggedIn) {
+    return "/sign-in";
   }
 
   // Skip login page if user is already loggedin
