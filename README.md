@@ -1,9 +1,17 @@
-## An image board created with
+## Image gallery
 
--   Vue 3 with SFC syntax
--   Vuetify 3
--   Vite 3
--   Supabase for DB and storage
--   Pinia for state management
--   Vue router
+![screenshot](https://i.imgur.com/DP3FvwF.png)
+
+## Tech Stack
+
 -   TypeScript
+-   Vue 3
+-   Vuetify 3
+-   Supabase for postgres database, cloud storage, authentication
+
+## Features
+
+-   Upload images in any format
+-   Create an account with public providers (Google & Github at the moment) or user/password
+-   Search by title or description
+-   Light/dark mode toggle
